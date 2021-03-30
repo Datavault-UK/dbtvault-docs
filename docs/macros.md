@@ -579,8 +579,9 @@ Generates sql to build a satellite table using the provided parameters.
             SELECT DISTINCT e.CUSTOMER_PK, e.HASHDIFF, e.CUSTOMER_NAME, e.CUSTOMER_PHONE, e.CUSTOMER_DOB, e.EFFECTIVE_FROM, e.LOAD_DATE, e.SOURCE
             FROM source_data AS e
             LEFT JOIN latest_records
-            ON latest_records.HASHDIFF = e.HASHDIFF
-            WHERE latest_records.HASHDIFF IS NULL
+            ON latest_records.CUSTOMER_PK = e.CUSTOMER_PK
+            WHERE latest_records.HASHDIFF != e.HASHDIFF
+                OR latest_records.HASHDIFF IS NULL
         )
         
         SELECT * FROM records_to_insert
